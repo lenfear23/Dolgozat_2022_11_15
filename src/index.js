@@ -1,19 +1,65 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('all').addEventListener('click', async () => {
+        
+        let response = await fetch('./quotes.json');
+        let eredmeny = await response.json();
+    
+    
+        let adatok = document.getElementById('adatok');
+        adatok.textContent = '';
+
+        let asd = document.querySelector(".lista");
+    
+        
+        for (let p of sorrend){
+            asd.innerHTML += `Author: ${p.author} Quote: ${p.quote}`
+        }
     });
-};
-function adatBetoltes() {
-    return __awaiter(this, void 0, void 0, function* () {
-        // JSON: JavaScript Object Notation
-        const response = yield fetch('/src/quotes.json');
-        const eredmeny = yield response.json();
-        console.log(eredmeny);
-    });
-}
-adatBetoltes();
+
+    document.getElementById('the').addEventListener('click', async () => {
+        
+        let response = await fetch('./quotes.json');
+        let eredmeny = await response.json();
+
+        let tomb = [];
+        for(let p of eredmeny.quotes){
+            let sor = p.quote;
+            sor = sor.replaceAll(" the ", "<b> the </b>");
+            sor = sor.replaceAll("The ", "<b>The </b>");
+            tomb.push(sor);
+        }
+
+      
+        let adatok = document.getElementById('adatok');
+        adatok.textContent = '';
+
+        for(let p of tomb){
+            let li = document.createElement('li');
+            li.innerHTML = p;
+            adatok.appendChild(li);
+        }
+    })
+
+    document.getElementById('hossz').addEventListener('click', async () => {
+       
+        let response = await fetch('./quotes.json');
+        let eredmeny = await response.json();
+
+        let lista = [];
+        for(let p of eredmeny.quotes){
+            let szam = parseInt(p.quote.length);
+            lista.push(szam);
+            lista.join(',');
+        }
+
+        document.getElementById('hossz').textContent = lista;
+    })
+
+    document.getElementById('db').addEventListener('input', async () => {
+       
+        let response = await fetch('./quotes.json');
+        let eredmeny = await response.json();
+
+    })
+})
